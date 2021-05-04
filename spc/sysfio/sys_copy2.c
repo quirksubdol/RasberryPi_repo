@@ -1,5 +1,5 @@
 /*
- * Task C3
+ * Task C4
  * Use the system calls open(), read(), write() and close()
  * to open, read, display and close a text file.
 */
@@ -16,6 +16,7 @@ int main() {
 	int fd, fd2; 				// File descriptor of files to read and copy
 	ssize_t ct; 				// Count of bytes read by read()
 	char buffer[BUFFER_SIZE]; 	// Buffer to store bytes read
+	int count=0;					// counter for the lines read
 	
 	fd2 = open("f_out.txt", O_CREAT);		// Creates the file to copy 
 	
@@ -33,10 +34,16 @@ int main() {
 	
 	while(ct > 0) 							// While some bytes were read...
 	{
+		for(int i=0; i<ct; i++){
+			if (buffer[i] == '\n'){
+				count++;
+			}
+		} 
 		// printf("copying...\n");
 		write(fd2, buffer, ct); 			// ...write the bytes to the second file f_out.txt
 		ct = read(fd, &buffer, BUFFER_SIZE);// ..and read more bytes into the buffer
 	}
-	close(fd); 								// close the file
+	printf("%d lines in the file", count);
+	close(fd); 								// close the files
 	close(fd2);
 }
